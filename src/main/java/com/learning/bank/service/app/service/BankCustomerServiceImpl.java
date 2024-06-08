@@ -4,6 +4,7 @@ import com.learning.bank.service.app.entity.BankCustomer;
 import com.learning.bank.service.app.entity.Savings;
 import com.learning.bank.service.app.repository.BankCustomerRepository;
 import com.learning.bank.service.app.service.interfaces.BankCustomerService;
+import com.learning.bank.service.app.util.EmailUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.util.Optional;
 public class BankCustomerServiceImpl implements BankCustomerService {
     @Autowired
     private BankCustomerRepository bankCustomerRepository;
+    @Autowired
+    private EmailUtilService emailUtilService;
     @Override
     public String addCustomer(BankCustomer bankCustomer) {
          bankCustomerRepository.save(bankCustomer);
@@ -57,11 +60,16 @@ public class BankCustomerServiceImpl implements BankCustomerService {
         if(!byId.isPresent()){
             throw new RuntimeException("Account not found");
         }
+        if(byId.get().getSavings().getBalance()<=0){
+            emailUtilService.sendMail(account,amount, bankCustomerRepository.findById(account).get().getSavings().getBalance(),"insufficient balance");
+           return byId.get();
+        }
         BankCustomer bankCustomer = byId.get();
         Savings savings = bankCustomer.getSavings();
         savings.setBalance(savings.getBalance()-amount);
         bankCustomer.setSavings(savings);
         bankCustomerRepository.save(bankCustomer);
+        emailUtilService.sendMail(account,amount, bankCustomerRepository.findById(account).get().getSavings().getBalance(),null);
         return bankCustomer;
     }
 
