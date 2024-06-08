@@ -5,7 +5,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -14,14 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @DynamicUpdate
 @DynamicInsert
-public class BankCustomer {
+@EqualsAndHashCode
+public class Savings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String customerName;
-    @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
-    private List<Address> customerAddress;
-    @OneToOne(cascade = CascadeType.ALL )
-    private Savings savings;
+    private double balance;
+    private String cardType;
+    @OneToOne(cascade = CascadeType.ALL)
+    private BankCustomer bankCustomer;
 }

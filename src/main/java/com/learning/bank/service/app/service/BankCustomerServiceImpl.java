@@ -1,6 +1,7 @@
 package com.learning.bank.service.app.service;
 
 import com.learning.bank.service.app.entity.BankCustomer;
+import com.learning.bank.service.app.entity.Savings;
 import com.learning.bank.service.app.repository.BankCustomerRepository;
 import com.learning.bank.service.app.service.interfaces.BankCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,23 @@ public class BankCustomerServiceImpl implements BankCustomerService {
         }
         return "Customer not found";
     }
+
+    @Override
+    public Savings getBalance(int account) {
+        return bankCustomerRepository.findById(account).get().getSavings();
+    }
+    @Override
+    public BankCustomer accountDebit(int account,double amount) {
+        Optional<BankCustomer> byId = bankCustomerRepository.findById(account);
+        if(!byId.isPresent()){
+            throw new RuntimeException("Account not found");
+        }
+        BankCustomer bankCustomer = byId.get();
+        Savings savings = bankCustomer.getSavings();
+        savings.setBalance(savings.getBalance()-amount);
+        bankCustomer.setSavings(savings);
+        bankCustomerRepository.save(bankCustomer);
+        return bankCustomer;
+    }
+
 }
