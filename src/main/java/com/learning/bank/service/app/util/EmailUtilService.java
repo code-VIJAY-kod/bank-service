@@ -11,8 +11,8 @@ import java.util.Properties;
 @Component
 @Slf4j
 public class EmailUtilService {
-     private  static final String EMAIL_ID="vskedutech@gmail.com";
-     private  static final String PASSWORD="dvby snor nait qamz";
+     private  static final String EMAIL_ID="user-user-email@gmail.com";
+     private  static final String PASSWORD="user-your-password";
 
     public void sendMail(int account,double debitAmount,double balance,String note){
         Properties properties=new Properties();
