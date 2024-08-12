@@ -29,8 +29,8 @@ public class EmailUtilService {
         });
         Message message =new MimeMessage(session);
         try {
-            message.setFrom(new InternetAddress("vskedutech@gmail.com"));
-            message.setRecipient(Message.RecipientType.TO,new InternetAddress("vskedu@gmail.com"));
+            message.setFrom(new InternetAddress("abc####@gmail.com"));
+            message.setRecipient(Message.RecipientType.TO,new InternetAddress("pqr###@gmail.com"));
             message.setSubject("Transaction on account");
             message.setText("Account: "+account+"\n"+"Debit: "+debitAmount+"\nBal: "+balance+"\nNote: "+note);
 
